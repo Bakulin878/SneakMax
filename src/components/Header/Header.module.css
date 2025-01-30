@@ -1,0 +1,131 @@
+.header {
+  width: 100%;
+  justify-content: center;
+  background-color: var(--bg-color);
+}
+.container {
+  max-width: 1180px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 16px 32px;
+  color: #fff;
+}
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.navCart {
+  display: flex;
+  gap: 40px;
+}
+.menuButton {
+  display: none;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+.nav a {
+  color: #fff;
+  text-decoration: none;
+  font-family: Intro;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 14px;
+  letter-spacing: 0%;
+  transition: color 0.3s;
+}
+.nav a:hover {
+  color: var(--hover-color);
+}
+.nav a:active {
+  color: var(--active-color);
+}
+.cart {
+  display: flex;
+  align-items: center;
+  position: relative;
+  gap: 8px;
+  font-family: Intro;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 14px;
+  border-radius: 5px;
+  gap: 0.5rem;
+  transition: background-color 0.3s;
+}
+.cartIcon {
+  width: 24px;
+  height: 24px;
+}
+.cartCount {
+  position: absolute;
+  top: 12px;
+  right: -5px;
+  background: var(--accent-color);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@media screen and (max-width: 1025px) {
+  .menuButton {
+    display: block;
+  }
+  .navCart {
+    gap: 28px;
+  }
+  .nav {
+    position: absolute;
+    flex-direction: column;
+    background-color: var(--bg-color);
+    width: 320px;
+    top: 0px;
+    left: 0px;
+    text-align: left;
+    padding: 24px 32px;
+    opacity: 0;
+    transform: translateX(-320px);
+    visibility: hidden;
+    transition:
+    transform 0.3s ease,
+    opacity 0.3s ease,
+    visibility 0.3s;
+    border-bottom-right-radius: 17px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  .navActive {
+    transform: translateX(0px);
+    opacity: 1;
+    visibility: visible;
+    z-index: 2;
+  }
+  .nav a {
+    font-size: 28px;
+    line-height: 17px;
+    align-self: flex-start;
+  }
+  .cart {
+    font-size: 0;
+  }
+}
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 16px 16px;
+  }
+}

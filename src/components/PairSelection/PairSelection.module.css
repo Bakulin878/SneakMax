@@ -1,0 +1,230 @@
+.pairSelection {
+  padding: 4rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container {
+  width: var(--container-width);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.card {
+  width: 1180px;
+  height: 658px;
+  padding: 40px 100px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: var(--sec-bg-color);
+}
+.h2 {
+  text-align: left;
+  color: rgb(68, 75, 88);
+  font-family: Intro;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 30px;
+  margin-bottom: 20px;
+}
+.p {
+  color: rgb(128, 128, 128);
+  font-family: Intro;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 16px;
+  padding-bottom: 9px;
+  text-align: left;
+  border-bottom: 1px solid rgb(128, 128, 128);
+}
+.h3 {
+  font-family: Intro;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 24px;
+  margin-top: 20px;
+  color: rgb(68, 75, 88);
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+.options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  column-gap: 70px;
+  row-gap: 20px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgb(128, 128, 128);
+}
+.sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgb(128, 128, 128);
+}
+.option {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.genderOption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--small-color);
+  border-radius: 4px;
+  font-size: 18px;
+  line-height: 20px;
+  text-align: center;
+  color: var(--small-color);
+}
+.sizeOption {
+  max-width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+.comments {
+  height: 363px;
+  border-bottom: 1px solid rgb(128, 128, 128);
+}
+.option img {
+  /* width: 100px; */
+  /* height: 100px; */
+  object-fit: cover;
+  border-radius: 5px;
+}
+.pairSelection input[type="checkbox"] {
+  display: none;
+}
+.textArea {
+  width: 465px;
+  height: 246px;
+  padding: 1rem;
+  border-radius: 5px;
+}
+.sending {
+  width: 655px;
+  height: 399px;
+  border-radius: 4px;
+  background: var(--small-color);
+  padding: 40px;
+  margin-top: 24px;
+}
+.heading {
+  color: white;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 140%;
+  margin-bottom: 10px;
+}
+.text {
+  color: white;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 140%;
+  margin-bottom: 24px;
+}
+.input {
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0px;
+  align-items: center;
+}
+.nextButton {
+  width: 211px;
+  height: 50px;
+  color: black;
+  border: 1px solid rgb(68, 75, 88);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.submitButton {
+  width: 220px;
+  height: 60px;
+  border-radius: 4px;
+  background: rgb(241, 79, 79);
+  color: #fff;
+}
+.nextButton:hover {
+  background-color: var(--hover-color);
+}
+.submitButton:hover {
+  background-color: var(--hover-color);
+}
+.nextButton:active {
+  background-color: var(--active-color);
+}
+.submitButton:active {
+  background-color: var(--active-color);
+}
+
+@media screen and (max-width: 1244px) {
+  .card {
+    width: 100%;
+    height: 100%;
+    padding: 40px 100px;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .card {
+    padding: 32px 37px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .pairSelection {
+    padding: 32px 16px;
+  }
+  .container {
+    width: 100%;
+  }
+  .textArea {
+    width: 100%;
+  }
+  .sending {
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+  }
+}
+@media screen and (max-width: 435px) {
+  .card {
+    padding: 16px 16px;
+  }
+  .options {
+    grid-template-columns: repeat(auto-fit, minmax(256px, 1fr));
+  }
+  .submitButton {
+    height: 46px;
+  }
+  .comments {
+    height: 100%;
+    border-bottom: 1px solid rgb(128, 128, 128);
+  }
+}

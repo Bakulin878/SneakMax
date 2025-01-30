@@ -1,0 +1,80 @@
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: var(--bg-color);
+  color: #fff;
+  padding: 100px 32px;
+}
+.content {
+  width: var(--container-width);
+  display: flex;
+  flex-direction: column;
+}
+.content a {
+  z-index: 1;
+  align-self: flex-start;
+}
+.title {
+  width: 559px;
+  height: 100px;
+  text-align: left;
+  font-family: Intro Regular;
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 140%;
+  margin-bottom: 20px;
+}
+.p {
+  width: 480px;
+  height: 44px;
+  text-align: left;
+  font-family: Intro;
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 40px;
+}
+.p:before {
+  content: "SneakMax";
+  position: absolute;
+
+  font-family: Intro;
+  font-size: 200px;
+  font-weight: 700;
+  line-height: 85px;
+  color: rgba(255, 255, 255, 0.1);
+  z-index: 0;
+  transform: translate(144px, 0px);
+}
+@media screen and (max-width: 1180px) {
+  .p:before {
+    font-size: 170px;
+    transform: translate(147px, -5px);
+  }
+}
+@media screen and (max-width: 1025px) {
+  .hero {
+    padding: 44px 32px;
+  }
+  .p:before {
+    display: none;
+  }
+}
+@media screen and (max-width: 768px) {
+  .hero {
+    padding: 32px 16px;
+  }
+  .title {
+    width: 100%;
+    height: 100%;
+    line-height: 100%;
+    font-size: 27px;
+  }
+  .p {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 32px;
+    font-size: 14px;
+  }
+}

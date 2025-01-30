@@ -1,0 +1,31 @@
+<svg width="40.000000" height="39.896606" viewBox="0 0 40 39.8966" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<desc>
+			Created with Pixso.
+	</desc>
+	<defs>
+		<filter id="filter_26_43_dd" x="-19.000000" y="-100.000000" width="466.000000" height="128.000000" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+			<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+			<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+			<feOffset dx="4" dy="8"/>
+			<feGaussianBlur stdDeviation="6.66667"/>
+			<feComposite in2="hardAlpha" operator="out" k2="-1" k3="1"/>
+			<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0.05098 0 0 0 0 0.32941 0 0 0 0.2 0"/>
+			<feBlend mode="normal" in2="BackgroundImageFix" result="effect_dropShadow_1"/>
+			<feBlend mode="normal" in="SourceGraphic" in2="effect_dropShadow_1" result="shape"/>
+		</filter>
+		<filter id="filter_26_46_dd" x="0.000000" y="0.000000" width="40.000000" height="39.896606" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+			<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+			<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+			<feOffset dx="2" dy="4"/>
+			<feGaussianBlur stdDeviation="3.33333"/>
+			<feComposite in2="hardAlpha" operator="out" k2="-1" k3="1"/>
+			<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0.05098 0 0 0 0 0.32941 0 0 0 0.2 0"/>
+			<feBlend mode="normal" in2="BackgroundImageFix" result="effect_dropShadow_1"/>
+			<feBlend mode="normal" in="SourceGraphic" in2="effect_dropShadow_1" result="shape"/>
+		</filter>
+	</defs>
+	<g filter="url(#filter_26_46_dd)">
+		<ellipse id="Ellipse 11" cx="18.000000" cy="15.948242" rx="10.000000" ry="9.948276" fill="#FFFFFF" fill-opacity="1.000000"/>
+	</g>
+	<path id="?" d="M18.78 18.52L17.18 18.52C17.16 18.03 17.21 17.59 17.32 17.21C17.44 16.83 17.6 16.52 17.79 16.28C18 16.03 18.21 15.8 18.41 15.59C18.62 15.39 18.81 15.17 19 14.93C19.2 14.68 19.33 14.42 19.39 14.15C19.47 13.6 19.35 13.17 19.06 12.86C18.76 12.55 18.36 12.39 17.88 12.39C17.52 12.39 17.18 12.51 16.89 12.75C16.59 12.99 16.41 13.31 16.35 13.71L15 13.71C15.03 12.81 15.31 12.13 15.82 11.67C16.34 11.2 17.03 10.97 17.87 10.97C18.64 10.95 19.32 11.14 19.9 11.54C20.48 11.94 20.83 12.47 20.95 13.12C21 13.47 21.01 13.77 20.97 14.03C20.94 14.37 20.83 14.68 20.65 14.98C20.48 15.27 20.29 15.52 20.08 15.75C19.87 15.97 19.67 16.21 19.46 16.46C19.26 16.7 19.09 17 18.96 17.35C18.83 17.69 18.77 18.08 18.78 18.52ZM18.62 20.72C18.45 20.88 18.24 20.96 17.98 20.96C17.72 20.96 17.49 20.88 17.31 20.72C17.13 20.56 17.04 20.36 17.04 20.11C17.04 19.86 17.13 19.65 17.31 19.49C17.49 19.34 17.72 19.26 17.98 19.26C18.24 19.26 18.45 19.34 18.62 19.49C18.8 19.65 18.89 19.86 18.89 20.11C18.89 20.36 18.8 20.56 18.62 20.72Z" fill="#444B58" fill-opacity="1.000000" fill-rule="nonzero"/>
+</svg>
