@@ -1,13 +1,13 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API_URL = 'https://70fd489b13cfbfb8.mokky.dev/team';
+const API_URL = "https://70fd489b13cfbfb8.mokky.dev";
 
-export const fetchTeam = async (filters = {}) => {
+export const fetchTeam = async () => {
   try {
-    const response = await axios.get(API_URL, { params: filters });
-    return response.data; // Возвращаем данные
+    const response = await axios.get(`${API_URL}/team`);
+    return response.data;
   } catch (error) {
-    console.error('Ошибка при загрузке данных:', error);
-    throw error;
+    throw new Error("Ошибка загрузки данных о команде.");
+    console.error("Ошибка загрузки команды:", error);
   }
 };

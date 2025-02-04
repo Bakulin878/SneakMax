@@ -1,62 +1,54 @@
 import { useState, useEffect } from "react";
 import styles from "./ProductPage.module.css";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { getSneakerById } from "../../redux/slices/sneakersSlice";
+import { addToCart, getCartItems } from "../../redux/slices/cartSlice"; // Redux-корзина
 import star from "../../assets/icons/Star 5.svg";
 import { Sneaker } from "../../types/bean";
 
-const CART_API_URL = "https://70fd489b13cfbfb8.mokky.dev/cart";
-
 function ProductPage() {
   const { id } = useParams();
-  const [product, setProduct] = useState("");
-  const [selectedSize, setSelectedSize] = useState(null);
+  const dispatch = useAppDispatch();
+  const product = useAppSelector((state) => state.sneakers.selectedSneaker);
+  const [selectedSize, setSelectedSize] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    async function fetchProduct() {
-      try {
-        const response = await axios.get(
-          `https://70fd489b13cfbfb8.mokky.dev/sneakers/${id}`
-        );
-        setProduct(response.data);
-      } catch (error) {
-        console.error("Ошибка загрузки товара:", error);
-      }
+    if (id) {
+      dispatch(getSneakerById(Number(id))); // Загружаем товар из Redux
     }
-    fetchProduct();
-  }, [id]);
+  }, [id, dispatch]);
 
   const handleOrder = async () => {
-    if (!selectedSize) {
+    if (!selectedSize || !product) {
       alert("Выберите размер перед добавлением в корзину!");
       return;
     }
 
-    const itemToCart: Sneaker = {
-      price: product.price,
-      id: product.id,
-      vendorСode: product.vendorСode,
-      inStock: product.inStock,
-      title: product.title,
-      description: product.description,
-      imgUrl: product.imgUrl,
-      stars: product.stars,
-      size: selectedSize,
-      price: product.price,
-      oldPrice: product.oldPrice,
-      gender: product.gender,
-      color: product.color,
-      compound: product.compound,
-      country: product.country,
+    const itemToCart: Sneaker & { size: number } = {
+      id: product.id || 0, // ✅ Гарантируем, что id — число
+      vendorCode: product.vendorCode || "",
+      inStock: product.inStock || 0,
+      title: product.title || "Без названия",
+      description: product.description || "Описание отсутствует",
+      imgUrl: product.imgUrl || "",
+      stars: product.stars || 0,
+      sizes: product.sizes || [],
+      price: product.price || 0,
+      oldPrice: product.oldPrice || 0,
+      gender: product.gender || "Универсальный",
+      color: product.color || "Не указан",
+      compound: product.compound || "Не указан",
+      country: product.country || "Не указано",
+      size: selectedSize, // ✅ Добавляем выбранный размер
     };
 
     setLoading(true);
     try {
-      await axios.post(CART_API_URL, itemToCart);
-      alert(
-        `Товар "${product.title}" (${selectedSize}) добавлен в корзину!`
-      );
+      dispatch(addToCart(itemToCart)); // ✅ Теперь добавление в Redux
+      dispatch(getCartItems()); // Обновляем корзину
+      alert(`Товар "${product?.title}" (${selectedSize}) добавлен в корзину!`);
     } catch (error) {
       console.error("Ошибка при добавлении в корзину:", error);
       alert("Ошибка при добавлении в корзину!");

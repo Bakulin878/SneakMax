@@ -1,58 +1,44 @@
 import { useEffect, useState } from "react";
 import styles from "./CatalogSection.module.css";
-// import { fetchSneakers } from '../../api/sneakersApi';
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Sneaker, SneakerCart } from "../../types/bean";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { getSneakers, filterSneakers } from "../../redux/slices/sneakersSlice";
 import eye from "../../assets/icons/Show.svg";
 import basket from "../../assets/icons/Basket.svg";
 import Nouislider from "nouislider-react";
-// import noUiSlider from "nouislider";
 import "nouislider/dist/nouislider.css";
+import { addToCart } from "../../redux/slices/cartSlice";
+import { Sneaker } from "../../types/bean";
 
-const CART_API_URL = "https://70fd489b13cfbfb8.mokky.dev/cart";
+// const CART_API_URL = "https://70fd489b13cfbfb8.mokky.dev/cart";
 
-function CatalogSection() {
+const CatalogSection = () => {
+  const dispatch = useAppDispatch();
+  const { sneakers, status } = useAppSelector((state) => state.sneakers);
   const [visibleProducts, setVisibleProducts] = useState<number>(6);
-  const [data, setData] = useState<Sneaker[]>([]);
+  // const [data, setData] = useState<Sneaker[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Sneaker | null>(null);
   const [selectedSize, setSelectedSize] = useState<number | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  // значения для Цены
+  // const [loading, setLoading] = useState<boolean>(false);
+
+  // **Фильтры**
   const [min, setMin] = useState<number>(0);
   const [max, setMax] = useState<number>(30000);
-  // значения для Пола
   const [man, setMan] = useState<boolean>(true);
   const [woman, setWoman] = useState<boolean>(true);
-  // значения для Размера
   const [sizes, setSizes] = useState<number[]>([]);
 
   const navigate = useNavigate();
 
-  async function fetchData(url: string) {
-    try {
-      const response = await axios.get<Sneaker[]>(url);
-      setData(response.data);
-    } catch (error) {
-      console.error("Ошибка загрузки данных:", (error as Error).message);
-    }
-  }
-
   useEffect(() => {
-    const url = "https://70fd489b13cfbfb8.mokky.dev/sneakers";
-    fetchData(url);
-  }, []);
+    if (status === "idle") {
+      dispatch(getSneakers());
+    }
+  }, [status, dispatch]);
 
-  // Фильтрация товаров
+  // **Фильтрация товаров через Redux**
   const filter = () => {
-    let genderQuery = "";
-    let sizeQuery = sizes.map((size) => `&sizes[]=${size}`).join("");
-
-    if (man && !woman) genderQuery = "&gender=Мужской";
-    else if (!man && woman) genderQuery = "&gender=Женский";
-
-    const url = `https://70fd489b13cfbfb8.mokky.dev/sneakers?price[from]=${min}&price[to]=${max}${genderQuery}${sizeQuery}`;
-    fetchData(url);
+    dispatch(filterSneakers({ min, max, man, woman, sizes }));
   };
 
   const loadMore = () => {
@@ -76,33 +62,38 @@ function CatalogSection() {
     setSelectedSize(size);
   };
 
-  const handleAddToCart = async () => {
-    if (!selectedSize) {
+  const handleAddToCart = () => {
+    if (!selectedSize || !selectedProduct) {
       alert("Выберите размер перед добавлением в корзину!");
       return;
     }
 
-    const itemToCart: SneakerCart = {
-      ...selectedProduct,
-      size: selectedSize,
-    };
-
-    setLoading(true);
-    try {
-      await axios.post(CART_API_URL, itemToCart);
-      alert(
-        `Товар "${selectedProduct.title}" (${selectedSize}) добавлен в корзину!`
-      );
-    } catch (error) {
-      console.error("Ошибка при добавлении в корзину:", error);
-      alert("Ошибка при добавлении в корзину!");
-    } finally {
-      setLoading(false);
-      handleCloseModal();
-    }
+    // ✅ Явно указываем тип Sneaker & { size: number }
+  const itemToCart: Sneaker & { size: number } = {
+    id: selectedProduct.id, // 🔹 Теперь `id` точно есть
+    vendorCode: selectedProduct.vendorCode,
+    inStock: selectedProduct.inStock,
+    title: selectedProduct.title,
+    description: selectedProduct.description,
+    imgUrl: selectedProduct.imgUrl,
+    stars: selectedProduct.stars,
+    sizes: selectedProduct.sizes,
+    price: selectedProduct.price,
+    oldPrice: selectedProduct.oldPrice,
+    gender: selectedProduct.gender,
+    color: selectedProduct.color,
+    compound: selectedProduct.compound,
+    country: selectedProduct.country,
+    size: selectedSize, // 🔹 Размер добавляется как поле size
   };
 
+    dispatch(addToCart(itemToCart));
+  alert(`Товар "${selectedProduct?.title}" (${selectedSize}) добавлен в корзину!`);
+  handleCloseModal();
+};
+
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
   return (
     <section id="catalog" className={styles.catalog}>
       <div className={styles.container}>
@@ -129,7 +120,7 @@ function CatalogSection() {
                     className={styles.input}
                     type="number"
                     value={min}
-                    // onChange={(e) => handleInputChange(0, e.target.value)}
+                    onChange={(e) => setMin(Number(e.target.value))} // ✅ Исправлено
                     min="0"
                     // max={priceRange[1]}
                   />
@@ -138,7 +129,7 @@ function CatalogSection() {
                     className={styles.input}
                     type="number"
                     value={max}
-                    // onChange={(e) => handleInputChange(0, e.target.value)}
+                    onChange={(e) => setMax(Number(e.target.value))} // ✅ Исправлено
                     min="0"
                     // max={priceRange[1]}
                   />
@@ -147,12 +138,12 @@ function CatalogSection() {
                   <Nouislider
                     range={{ min: 0, max: 30000 }}
                     start={[1000, 25000]}
-                    connect
+                    connect={true}
+                    step={10}
                     onUpdate={(slider) => {
                       setMin(Number(slider[0]));
                       setMax(Number(slider[1]));
                     }}
-                    step={10}
                   />
                 </div>
               </div>
@@ -217,7 +208,7 @@ function CatalogSection() {
                 setMin(1000);
                 setMax(25000);
                 // Загружаем все товары без фильтров
-                fetchData("https://70fd489b13cfbfb8.mokky.dev/sneakers");
+                dispatch(filterSneakers({ min: 0, max: 30000, man: true, woman: true, sizes: [] }));
               }}
             >
               Сбросить
@@ -227,7 +218,7 @@ function CatalogSection() {
 
         {/* Товары */}
         <div className={styles.products}>
-          {data.slice(0, visibleProducts).map((product) => (
+          {sneakers.slice(0, visibleProducts).map((product) => (
             <div key={product.id} className={styles.productCard}>
               <div className={styles.productImageContainer}>
                 <img
@@ -258,7 +249,7 @@ function CatalogSection() {
       </div>
 
       {/* Кнопка "Показать ещё" */}
-      {visibleProducts < data.length && (
+      {visibleProducts < sneakers.length && (
         <button onClick={loadMore} className={styles.loadMoreButton}>
           Показать ещё
         </button>
@@ -300,6 +291,6 @@ function CatalogSection() {
       )}
     </section>
   );
-}
+};
 
 export default CatalogSection;

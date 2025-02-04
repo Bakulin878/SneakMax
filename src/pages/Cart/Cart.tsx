@@ -1,59 +1,33 @@
 import { useState, useEffect } from "react";
 import styles from "./Cart.module.css";
-import axios from "axios";
-
-const CART_API_URL = "https://70fd489b13cfbfb8.mokky.dev";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { getCartItems, removeFromCart, clearCart } from "../../redux/slices/cartSlice";
+import { placeOrder } from "../../redux/slices/ordersSlice";
+import { Order } from "../../types/bean";
 
 function Cart() {
-  const [cartItems, setCartItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [orderNumber, setOrderNumber] = useState(null);
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    email: "",
-  });
+  const dispatch = useAppDispatch();
+  const cartItems = useAppSelector((state) => state.cart.cart);
+  const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0);
+
+  const [orderNumber, setOrderNumber] = useState<number | null>(null);
+  const [formData, setFormData] = useState({ name: "", phone: "", email: "" });
 
   useEffect(() => {
-    async function fetchCart() {
-      try {
-        const response = await axios.get(`${CART_API_URL}/cart`);
-        setCartItems(response.data);
-        calculateTotal(response.data);
-      } catch (error) {
-        console.error("Ошибка загрузки корзины:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchCart();
+    dispatch(getCartItems()); // ✅ Загружаем товары из Redux
     generateOrderNumber();
-  }, []);
-
-  const calculateTotal = (items) => {
-    const total = items.reduce((sum, item) => sum + item.price, 0);
-    setTotalPrice(total);
-  };
+  }, [dispatch]);
 
   const generateOrderNumber = () => {
     setOrderNumber(Math.floor(1000 + Math.random() * 9000));
   };
 
-  const handleRemove = async (id) => {
-    try {
-      await axios.delete(`${CART_API_URL}/cart/${id}`);
-      const updatedCart = cartItems.filter((item) => item.id !== id);
-      setCartItems(updatedCart);
-      calculateTotal(updatedCart);
-    } catch (error) {
-      console.error("Ошибка удаления товара:", error);
-    }
+  const handleRemove = (id: number) => {
+    dispatch(removeFromCart(id)); // ✅ Удаление товара из Redux
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleOrder = async () => {
@@ -62,20 +36,41 @@ function Cart() {
       return;
     }
 
-    try {
-      await axios.post(`${CART_API_URL}/orders`, {
-        orderNumber,
-        items: cartItems,
-        totalPrice,
-        customer: formData,
-      });
-      
-      // Очистка корзины (удаление всех товаров)
-      await axios.patch(`${CART_API_URL}/cart`, []);
+    // ✅ Гарантируем, что orderNumber — число
+  const validOrderNumber = orderNumber ?? Math.floor(1000 + Math.random() * 9000);
 
+  // Преобразуем Sneaker[] в OrderItem[]
+  const orderItems = cartItems.map((item) => ({
+    id: item.id,
+    title: item.title,
+    price: item.price,
+    size: item.sizes[0],
+    sizes: [item.sizes[0]],
+    vendorСode: item.vendorCode,
+    inStock: item.inStock,
+    imgUrl: item.imgUrl,
+    description: item.description,
+    stars: item.stars,
+    oldPrice: item.oldPrice,
+    gender: item.gender,
+    color: item.color,
+    compound: item.compound,
+    country: item.country,
+  }));
+
+  const orderData: Order = {
+    id: undefined, // ✅ Теперь TypeScript не будет ругаться
+    orderNumber: validOrderNumber, 
+    items: orderItems,
+    totalPrice,
+    customer: formData,
+  };
+
+    try {
+      await dispatch(placeOrder(orderData));
+      await dispatch(clearCart()); // ✅ Очистка корзины через Redux
       alert(`Заказ №${orderNumber} успешно оформлен!`);
-      setCartItems([]);
-      setTotalPrice(0);
+
       setFormData({ name: "", phone: "", email: "" });
       generateOrderNumber();
     } catch (error) {
@@ -83,10 +78,6 @@ function Cart() {
       alert("Ошибка оформления заказа!");
     }
   };
-
-  if (loading) {
-    return <div className={styles.loading}>Загрузка...</div>;
-  }
 
   return (
     <div className={styles.cartPage}>
